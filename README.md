@@ -2,7 +2,7 @@
 
 A modular, production-grade spinning wheel SDK for the web.
 
-```
+```ini
 packages/
   core/       — Pure logic: engine, RNG, easing, angles (zero DOM)
   renderer/   — Canvas + SVG renderers (DOM layer)
@@ -74,12 +74,12 @@ console.log(result.segment.label);
 
 ## Packages
 
-| Package | Description |
-|---|---|
-| `@spin-wheel/core` | Pure engine logic — RNG, weighting, angle calc |
-| `@spin-wheel/renderer` | Canvas & SVG renderers |
-| `@spin-wheel/widget` | High-level widget (engine + renderer) |
-| `@spin-wheel/embed` | CDN-ready global build + auto-init |
+| Package                | Description                                    |
+| ---------------------- | ---------------------------------------------- |
+| `@spin-wheel/core`     | Pure engine logic — RNG, weighting, angle calc |
+| `@spin-wheel/renderer` | Canvas & SVG renderers                         |
+| `@spin-wheel/widget`   | High-level widget (engine + renderer)          |
+| `@spin-wheel/embed`    | CDN-ready global build + auto-init             |
 
 ---
 
@@ -119,7 +119,7 @@ function Wheel({ segments }) {
 
 ## Architecture
 
-```
+```ini
 @spin-wheel/core (pure JS, no DOM)
        ↓
 @spin-wheel/renderer (Canvas + SVG)
