@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spin Wheel Demo</title>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #f0f2f5;
+        color: #333;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem 1rem;
+      }
+      h1 {
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+      }
+      .wheels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: center;
+      }
+      .wheel-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 360px;
+      }
+      .wheel-card h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+      .wheel-mount {
+        width: 300px;
+        height: 300px;
+      }
+      button {
+        padding: 0.6rem 1.8rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #4f46e5;
+        color: #fff;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #4338ca;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .result {
+        font-size: 1rem;
+        min-height: 1.4em;
+        font-weight: 500;
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-B7kZktHp.js"></script>
+  </head>
+  <body>
+    <h1>🎡 Spin Wheel SDK Demo</h1>
+    <div class="wheels">
+      <div class="wheel-card">
+        <h2>Canvas Renderer</h2>
+        <div id="wheel-canvas" class="wheel-mount"></div>
+        <button id="btn-canvas">Spin!</button>
+        <div id="result-canvas" class="result"></div>
+      </div>
+      <div class="wheel-card">
+        <h2>SVG Renderer</h2>
+        <div id="wheel-svg" class="wheel-mount"></div>
+        <button id="btn-svg">Spin!</button>
+        <div id="result-svg" class="result"></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+{
+	"name": "spin-wheel-monorepo",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"build": "pnpm -r build",
+		"dev": "pnpm --filter demo dev",
+		"clean": "pnpm -r exec rm -rf dist",
+		"test": "pnpm --filter @spin-wheel/core test"
+	},
+	"devDependencies": {
+		"typescript": "^5.7.3"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild"
+		]
+	},
+	"packageManager": "pnpm@10.6.2"
+}
