@@ -11,6 +11,9 @@ importers:
       '@biomejs/biome':
         specifier: ^2.4.4
         version: 2.4.4
+      '@types/node':
+        specifier: ^25.3.2
+        version: 25.3.2
       nhb-scripts:
         specifier: ^1.9.2
         version: 1.9.2
@@ -43,9 +46,6 @@ importers:
         specifier: workspace:*
         version: link:../packages/widget
     devDependencies:
-      '@types/node':
-        specifier: ^25.3.2
-        version: 25.3.2
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
