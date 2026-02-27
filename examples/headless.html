@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example 4 — Engine-Level (Headless)</title>
+		<link rel="stylesheet" href="./src/styles.css" />
+	</head>
+	<body>
+		<a href="index.html" class="back">← All Examples</a>
+		<h1>4. Engine-Level (Headless)</h1>
+		<p class="subtitle">
+			Use <code>WheelEngine</code> directly for synchronous, deterministic spin resolution.
+			No DOM, no animation, no renderer — pure logic.
+		</p>
+
+		<div class="layout">
+			<div class="info-area" style="max-width: 800px;">
+				<h2>Controls</h2>
+				<div class="controls">
+					<label>
+						Seed: <input id="seed" type="text" value="my-seed" class="input" />
+					</label>
+					<label>
+						Spins: <input id="count" type="number" value="10" min="1" max="100" class="input" style="width:80px" />
+					</label>
+					<button id="btn" class="btn">Run Spins</button>
+					<button id="btn-reset" class="btn btn-secondary">Reset Engine</button>
+				</div>
+
+				<h2>Results</h2>
+				<div id="log" class="log-box" style="max-height: 400px;">Click "Run Spins" to execute.</div>
+
+				<h2>Statistics</h2>
+				<pre id="stats" class="result-box">—</pre>
+
+				<h2>Source Code</h2>
+				<pre class="code-box"><code>import { WheelEngine } from '@spin-wheel/core';
+
+const engine = new WheelEngine({
+  segments: [
+    { id: 'pizza', label: '🍕 Pizza', weight: 2 },
+    { id: 'tacos', label: '🌮 Tacos', weight: 3 },
+    // ...
+  ],
+  seed: 'my-seed', // deterministic!
+});
+
+// ✅ Synchronous — result is known instantly
+const result = engine.spin();
+console.log(result.segment.label);
+
+// Retrieve the last result again later
+const same = engine.getLastResult();
+
+// Reset and spin again
+engine.reset();
+const next = engine.spin();
+
+// Check engine state
+engine.getState();     // 'idle' | 'spinning' | 'finished'
+engine.getSegments();  // readonly frozen segments</code></pre>
+			</div>
+		</div>
+
+		<script type="module" src="./src/headless.ts"></script>
+	</body>
+</html>

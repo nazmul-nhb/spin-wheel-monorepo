@@ -1,10 +1,23 @@
 import type { SpinResult, WheelSegment, WheelState } from '@spin-wheel/core';
 import type { SpinWheelWidget } from '@spin-wheel/widget';
 
+// ---------------------------------------------------------------------------
+// Global augmentations
+// ---------------------------------------------------------------------------
+
 declare global {
 	interface Window {
 		SpinWheel: SpinWheelGlobal;
 	}
+
+	interface SpinWheelEventMap {
+		'spinwheel:ready': CustomEvent<{ widget: SpinWheelWidget }>;
+		'spinwheel:state': CustomEvent<{ state: WheelState }>;
+		'spinwheel:finish': CustomEvent<SpinResult>;
+	}
+
+	interface HTMLElementEventMap extends SpinWheelEventMap {}
+	interface DocumentEventMap extends SpinWheelEventMap {}
 }
 
 // ---------------------------------------------------------------------------

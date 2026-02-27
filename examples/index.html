@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Spin Wheel — Examples</title>
+		<style>
+			*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+			body {
+				font-family: system-ui, -apple-system, sans-serif;
+				background: #f0f2f5; color: #1a1a2e;
+				min-height: 100vh; display: flex; flex-direction: column;
+				align-items: center; padding: 3rem 1rem;
+			}
+			h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+			p.subtitle { color: #666; margin-bottom: 2.5rem; font-size: 1.05rem; }
+			.grid {
+				display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: 1.5rem; width: 100%; max-width: 900px;
+			}
+			.card {
+				background: #fff; border-radius: 12px;
+				box-shadow: 0 2px 12px rgba(0,0,0,.06);
+				padding: 1.5rem; transition: transform .15s, box-shadow .15s;
+			}
+			.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+			.card h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+			.card p { font-size: 0.9rem; color: #555; margin-bottom: 1rem; line-height: 1.5; }
+			.card a {
+				display: inline-block; padding: 0.5rem 1.2rem;
+				background: #4f46e5; color: #fff; border-radius: 6px;
+				text-decoration: none; font-weight: 600; font-size: 0.9rem;
+				transition: background .15s;
+			}
+			.card a:hover { background: #4338ca; }
+			code { background: #f1f5f9; padding: 0.15rem 0.35rem; border-radius: 3px; font-size: 0.85em; }
+		</style>
+	</head>
+	<body>
+		<h1>🎡 Spin Wheel — Result Collection Examples</h1>
+		<p class="subtitle">Four ways to capture spin results, each demonstrated in its own page.</p>
+
+		<div class="grid">
+			<div class="card">
+				<h2>1. <code>await widget.spin()</code></h2>
+				<p>
+					The recommended approach. Spin returns a <code>Promise&lt;SpinResult&gt;</code>
+					that resolves after the animation completes.
+				</p>
+				<a href="await-spin.html">View Example →</a>
+			</div>
+
+			<div class="card">
+				<h2>2. <code>onFinish</code> Callback</h2>
+				<p>
+					Pass a callback in the widget config. Fires with the <code>SpinResult</code>
+					right before the promise resolves.
+				</p>
+				<a href="on-finish.html">View Example →</a>
+			</div>
+
+			<div class="card">
+				<h2>3. DOM Events (Embed)</h2>
+				<p>
+					Auto-init widgets dispatch typed <code>spinwheel:finish</code>,
+					<code>spinwheel:state</code>, and <code>spinwheel:ready</code> events.
+				</p>
+				<a href="dom-events.html">View Example →</a>
+			</div>
+
+			<div class="card">
+				<h2>4. Engine-Level (Headless)</h2>
+				<p>
+					Use <code>WheelEngine</code> directly for synchronous, server-side, or
+					headless spin resolution — no DOM, no animation.
+				</p>
+				<a href="headless.html">View Example →</a>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Example 3 — DOM Events (Embed)</title>
+		<link rel="stylesheet" href="./src/styles.css" />
+	</head>
+	<body>
+		<a href="index.html" class="back">← All Examples</a>
+		<h1>3. DOM Events (<code>spinwheel:*</code>)</h1>
+		<p class="subtitle">
+			Auto-init widgets dispatch typed <code>CustomEvent</code>s that bubble up the DOM.
+			Uses <code>@spin-wheel/embed</code> event type augmentation — no type errors!
+		</p>
+
+		<div class="layout">
+			<div class="wheel-area">
+				<div id="wheel" class="wheel-mount"></div>
+			</div>
+
+			<div class="info-area">
+				<h2>spinwheel:ready</h2>
+				<div id="ready-log" class="log-box">Waiting…</div>
+
+				<h2>spinwheel:state</h2>
+				<div id="state-log" class="log-box">—</div>
+
+				<h2>spinwheel:finish</h2>
+				<div id="finish-log" class="log-box">—</div>
+
+				<h2>Source Code</h2>
+				<pre class="code-box"><code>// Import types for DOM event augmentation
+import '@spin-wheel/embed';
+// or: import type {} from '@spin-wheel/embed';
+
+// ✅ Fully typed — e.detail is SpinResult
+document.addEventListener('spinwheel:finish', (e) => {
+  console.log(e.detail.index);
+  console.log(e.detail.segment.label);
+  console.log(e.detail.finalAngle);
+});
+
+// ✅ Typed — e.detail.state is WheelState
+document.addEventListener('spinwheel:state', (e) => {
+  console.log(e.detail.state);
+});
+
+// ✅ Typed — e.detail.widget is SpinWheelWidget
+document.addEventListener('spinwheel:ready', (e) => {
+  const widget = e.detail.widget;
+  widget.spin();
+});</code></pre>
+			</div>
+		</div>
+
+		<script type="module" src="./src/dom-events.ts"></script>
+	</body>
+</html>
