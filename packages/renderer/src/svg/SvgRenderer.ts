@@ -5,7 +5,7 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 /** Utility to create an SVG element. */
 function svgEl<K extends keyof SVGElementTagNameMap>(
 	tag: K,
-	attrs?: Record<string, string>
+	attrs?: Record<string, string>,
 ): SVGElementTagNameMap[K] {
 	const el = document.createElementNS(SVG_NS, tag);
 	if (attrs) {
@@ -21,20 +21,14 @@ function polarToCartesian(
 	cx: number,
 	cy: number,
 	r: number,
-	angleDeg: number
+	angleDeg: number,
 ): { x: number; y: number } {
 	const rad = (angleDeg * Math.PI) / 180;
 	return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
 }
 
 /** Build an SVG arc path for a wedge. */
-function wedgePath(
-	cx: number,
-	cy: number,
-	r: number,
-	startDeg: number,
-	endDeg: number
-): string {
+function wedgePath(cx: number, cy: number, r: number, startDeg: number, endDeg: number): string {
 	const start = polarToCartesian(cx, cy, r, endDeg);
 	const end = polarToCartesian(cx, cy, r, startDeg);
 	const largeArc = endDeg - startDeg > 180 ? 1 : 0;
@@ -46,7 +40,13 @@ function wedgePath(
 	].join(' ');
 }
 
-/** SVG-based wheel renderer. */
+/**
+ * SVG-based wheel renderer.
+ *
+ * Performance: segment DOM elements are built once (on mount, setSegments,
+ * or resize) and cached. The per-frame `draw()` only updates the rotation
+ * transform on the <g> group — no DOM teardown/rebuild each frame.
+ */
 export class SvgRenderer extends BaseRenderer {
 	private svg: SVGSVGElement | null = null;
 	private wheelGroup: SVGGElement | null = null;
@@ -69,6 +69,7 @@ export class SvgRenderer extends BaseRenderer {
 
 		el.appendChild(this.svg);
 		this.updatePointer();
+		this.buildWheel();
 	}
 
 	protected onResize(): void {
@@ -77,6 +78,11 @@ export class SvgRenderer extends BaseRenderer {
 		this.svg.setAttribute('width', String(this.width));
 		this.svg.setAttribute('height', String(this.height));
 		this.updatePointer();
+		this.buildWheel();
+	}
+
+	protected onSegmentsChanged(): void {
+		this.buildWheel();
 	}
 
 	protected onDestroy(): void {
@@ -88,10 +94,25 @@ export class SvgRenderer extends BaseRenderer {
 		this.pointerEl = null;
 	}
 
+	/**
+	 * Per-frame draw: only updates the rotation transform.
+	 * All segment DOM was already built by `buildWheel()`.
+	 */
 	protected draw(): void {
-		if (!this.wheelGroup || !this.svg) return;
+		if (!this.wheelGroup) return;
+		const cx = this.width / 2;
+		const cy = this.height / 2;
+		this.wheelGroup.setAttribute('transform', `rotate(${this.currentAngle} ${cx} ${cy})`);
+	}
 
-		// Clear wheel group
+	/**
+	 * Rebuild the segment paths, labels, and hub inside the wheel group.
+	 * Called once when segments or dimensions change — NOT every frame.
+	 */
+	private buildWheel(): void {
+		if (!this.wheelGroup) return;
+
+		// Clear previous children
 		while (this.wheelGroup.firstChild) {
 			this.wheelGroup.removeChild(this.wheelGroup.firstChild);
 		}
@@ -106,6 +127,9 @@ export class SvgRenderer extends BaseRenderer {
 		const offsetDeg = -90 - sliceDeg / 2;
 
 		for (let i = 0; i < this.segments.length; i++) {
+			const seg = this.segments[i];
+			if (!seg) continue;
+
 			const startDeg = offsetDeg + i * sliceDeg;
 			const endDeg = startDeg + sliceDeg;
 			const d = wedgePath(cx, cy, radius, startDeg, endDeg);
@@ -131,7 +155,7 @@ export class SvgRenderer extends BaseRenderer {
 				'text-anchor': 'middle',
 				'dominant-baseline': 'central',
 			});
-			text.textContent = this.segments[i]!.label;
+			text.textContent = seg.label;
 			this.wheelGroup.appendChild(text);
 		}
 
@@ -145,9 +169,6 @@ export class SvgRenderer extends BaseRenderer {
 			'stroke-width': '2',
 		});
 		this.wheelGroup.appendChild(hub);
-
-		// rotation
-		this.wheelGroup.setAttribute('transform', `rotate(${this.currentAngle} ${cx} ${cy})`);
 	}
 
 	private updatePointer(): void {
@@ -158,7 +179,7 @@ export class SvgRenderer extends BaseRenderer {
 		const size = 16;
 		this.pointerEl.setAttribute(
 			'points',
-			`${cx},${topY} ${cx - size / 2},${topY - size} ${cx + size / 2},${topY - size}`
+			`${cx},${topY} ${cx - size / 2},${topY - size} ${cx + size / 2},${topY - size}`,
 		);
 		this.pointerEl.setAttribute('fill', '#e74c3c');
 		this.pointerEl.setAttribute('stroke', '#c0392b');

@@ -15,7 +15,7 @@ function setupWheel(
 	mountSelector: string,
 	btnSelector: string,
 	resultSelector: string,
-	renderer: 'canvas' | 'svg'
+	renderer: 'canvas' | 'svg',
 ): void {
 	const btn = document.querySelector<HTMLButtonElement>(btnSelector);
 	const resultEl = document.querySelector<HTMLElement>(resultSelector);

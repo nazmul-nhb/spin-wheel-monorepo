@@ -12,7 +12,7 @@ export function calculateFinalAngle(
 	index: number,
 	count: number,
 	extraSpins: number,
-	rng: () => number
+	rng: () => number,
 ): number {
 	const segmentAngle = 360 / count;
 

@@ -6,6 +6,9 @@ export class CanvasRenderer extends BaseRenderer {
 	private canvas: HTMLCanvasElement | null = null;
 	private ctx: CanvasRenderingContext2D | null = null;
 
+	/** Cached device-pixel-ratio, updated on mount / resize. */
+	private dpr = 1;
+
 	protected onMount(el: HTMLElement): void {
 		this.canvas = document.createElement('canvas');
 		this.canvas.style.display = 'block';
@@ -28,14 +31,14 @@ export class CanvasRenderer extends BaseRenderer {
 
 	protected draw(): void {
 		if (!this.ctx) return;
-		drawWheel(this.ctx, this.segments, this.currentAngle, this.width, this.height);
+		drawWheel(this.ctx, this.segments, this.currentAngle, this.width, this.height, this.dpr);
 	}
 
 	private applySize(): void {
 		if (!this.canvas) return;
-		const dpr = typeof devicePixelRatio !== 'undefined' ? devicePixelRatio : 1;
-		this.canvas.width = this.width * dpr;
-		this.canvas.height = this.height * dpr;
+		this.dpr = typeof devicePixelRatio !== 'undefined' ? devicePixelRatio : 1;
+		this.canvas.width = this.width * this.dpr;
+		this.canvas.height = this.height * this.dpr;
 		this.canvas.style.width = `${this.width}px`;
 		this.canvas.style.height = `${this.height}px`;
 	}

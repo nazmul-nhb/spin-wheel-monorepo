@@ -6,5 +6,5 @@ export default defineConfig({
 	dts: true,
 	sourcemap: true,
 	clean: true,
-	external: ['@spin-wheel/core'],
+	external: ['@spin-wheel/core', '@spin-wheel/renderer', '@spin-wheel/widget'],
 });

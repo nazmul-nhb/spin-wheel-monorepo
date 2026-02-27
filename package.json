@@ -4,11 +4,17 @@
 	"type": "module",
 	"scripts": {
 		"build": "pnpm -r build",
+		"build:embed": "pnpm --filter @spin-wheel/embed build",
 		"dev": "pnpm --filter demo dev",
+		"dev:embed": "pnpm --filter @spin-wheel/embed dev",
 		"clean": "pnpm -r exec rm -rf dist",
-		"test": "pnpm --filter @spin-wheel/core test"
+		"test": "pnpm --filter @spin-wheel/core test",
+		"lint": "biome check .",
+		"lint:fix": "biome check --write .",
+		"format": "biome format --write ."
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^2.4.4",
 		"typescript": "^5.7.3"
 	},
 	"pnpm": {

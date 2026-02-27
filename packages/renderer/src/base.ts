@@ -17,12 +17,16 @@ export const SEGMENT_COLORS: readonly string[] = [
 
 /** Pick a colour for a segment by index. */
 export function colorForIndex(index: number): string {
-	return SEGMENT_COLORS[index % SEGMENT_COLORS.length]!;
+	const len = SEGMENT_COLORS.length;
+	return SEGMENT_COLORS[((index % len) + len) % len] ?? '#cccccc';
 }
 
 /**
  * Abstract base providing common state management for renderers.
  * Subclasses implement the actual drawing.
+ *
+ * Handles animation lifecycle, RAF cancellation on destroy, and
+ * guards against drawing after the renderer is destroyed.
  */
 export abstract class BaseRenderer implements WheelRenderer {
 	protected container: HTMLElement | null = null;
@@ -31,28 +35,55 @@ export abstract class BaseRenderer implements WheelRenderer {
 	protected width = 300;
 	protected height = 300;
 
+	/** Whether this renderer has been destroyed. */
+	protected destroyed = false;
+
+	/** Current RAF handle, used for cancellation. */
+	private rafId: number | null = null;
+
+	/** Rejection callback for the active rotateTo promise. */
+	private pendingReject: ((reason: Error) => void) | null = null;
+
 	mount(el: HTMLElement): void {
+		if (this.destroyed) {
+			throw new Error('Cannot mount a destroyed renderer.');
+		}
 		this.container = el;
 		this.onMount(el);
 	}
 
 	setSegments(segments: readonly WheelSegment[]): void {
 		this.segments = segments;
-		this.draw();
+		this.onSegmentsChanged();
+		this.scheduleDraw();
+	}
+
+	/**
+	 * Hook called after segments are replaced.
+	 * Subclasses can override to rebuild internal structures (e.g. SVG DOM).
+	 */
+	protected onSegmentsChanged(): void {
+		/* no-op by default */
 	}
 
 	setAngle(angle: number): void {
 		this.currentAngle = angle;
-		this.draw();
+		this.scheduleDraw();
 	}
 
 	rotateTo(angle: number, duration: number, easing: EasingFn): Promise<void> {
-		return new Promise<void>((resolve) => {
+		// Cancel any previously running animation
+		this.cancelAnimation();
+
+		return new Promise<void>((resolve, reject) => {
+			this.pendingReject = reject;
 			const startAngle = this.currentAngle;
 			const delta = angle - startAngle;
 			const startTime = performance.now();
 
 			const tick = (now: number): void => {
+				if (this.destroyed) return;
+
 				const elapsed = now - startTime;
 				const t = Math.min(elapsed / duration, 1);
 				const eased = easing(t);
@@ -61,15 +92,17 @@ export abstract class BaseRenderer implements WheelRenderer {
 				this.draw();
 
 				if (t < 1) {
-					requestAnimationFrame(tick);
+					this.rafId = requestAnimationFrame(tick);
 				} else {
 					this.currentAngle = angle;
 					this.draw();
+					this.rafId = null;
+					this.pendingReject = null;
 					resolve();
 				}
 			};
 
-			requestAnimationFrame(tick);
+			this.rafId = requestAnimationFrame(tick);
 		});
 	}
 
@@ -77,10 +110,13 @@ export abstract class BaseRenderer implements WheelRenderer {
 		this.width = width;
 		this.height = height;
 		this.onResize();
-		this.draw();
+		this.scheduleDraw();
 	}
 
 	destroy(): void {
+		if (this.destroyed) return;
+		this.destroyed = true;
+		this.cancelAnimation();
 		this.onDestroy();
 		this.container = null;
 	}
@@ -96,4 +132,25 @@ export abstract class BaseRenderer implements WheelRenderer {
 
 	/** Draw the current state. */
 	protected abstract draw(): void;
+
+	/** Draws only if not destroyed and mounted. */
+	private scheduleDraw(): void {
+		if (!this.destroyed) {
+			this.draw();
+		}
+	}
+
+	/** Cancel any in-flight RAF and reject the pending promise. */
+	private cancelAnimation(): void {
+		if (this.rafId !== null) {
+			cancelAnimationFrame(this.rafId);
+			this.rafId = null;
+		}
+		if (this.pendingReject) {
+			this.pendingReject(
+				new Error('Animation cancelled (renderer destroyed or new animation started).'),
+			);
+			this.pendingReject = null;
+		}
+	}
 }

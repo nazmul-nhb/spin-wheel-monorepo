@@ -1,0 +1,41 @@
+{
+	"name": "@spin-wheel/embed",
+	"version": "1.0.0",
+	"type": "module",
+	"sideEffects": false,
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
+		},
+		"./global": "./dist/spin-wheel.global.js"
+	},
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "tsdown && node build-global.mjs",
+		"build:global": "node build-global.mjs",
+		"dev": "vite"
+	},
+	"dependencies": {
+		"@spin-wheel/core": "workspace:*",
+		"@spin-wheel/renderer": "workspace:*",
+		"@spin-wheel/widget": "workspace:*"
+	},
+	"devDependencies": {
+		"esbuild": "^0.25.0",
+		"tsdown": "^0.11.3",
+		"typescript": "^5.7.3",
+		"vite": "^6.2.0"
+	}
+}

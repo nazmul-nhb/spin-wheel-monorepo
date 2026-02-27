@@ -11,7 +11,7 @@ export function drawSlice(
 	radius: number,
 	startAngle: number,
 	endAngle: number,
-	index: number
+	index: number,
 ): void {
 	ctx.beginPath();
 	ctx.moveTo(cx, cy);
@@ -33,7 +33,7 @@ export function drawLabel(
 	cy: number,
 	radius: number,
 	midAngle: number,
-	label: string
+	label: string,
 ): void {
 	ctx.save();
 	ctx.translate(cx, cy);
@@ -52,7 +52,7 @@ export function drawHub(
 	ctx: CanvasRenderingContext2D,
 	cx: number,
 	cy: number,
-	radius: number
+	radius: number,
 ): void {
 	ctx.beginPath();
 	ctx.arc(cx, cy, radius * 0.1, 0, Math.PI * 2);
@@ -81,16 +81,17 @@ export function drawPointer(ctx: CanvasRenderingContext2D, cx: number, topY: num
 }
 
 /**
- * Full wheel draw routine.
+ * Full wheel draw routine. dpr is accepted as a parameter to avoid
+ * per-frame lookups of the global devicePixelRatio.
  */
 export function drawWheel(
 	ctx: CanvasRenderingContext2D,
 	segments: readonly WheelSegment[],
 	angleDeg: number,
 	width: number,
-	height: number
+	height: number,
+	dpr: number,
 ): void {
-	const dpr = typeof devicePixelRatio !== 'undefined' ? devicePixelRatio : 1;
 	ctx.clearRect(0, 0, width * dpr, height * dpr);
 
 	const cx = (width * dpr) / 2;
@@ -106,12 +107,14 @@ export function drawWheel(
 	const offsetRad = -Math.PI / 2 - sliceAngle / 2 + rotRad;
 
 	for (let i = 0; i < segments.length; i++) {
+		const seg = segments[i];
+		if (!seg) continue;
 		const start = offsetRad + i * sliceAngle;
 		const end = start + sliceAngle;
 		drawSlice(ctx, cx, cy, radius, start, end, i);
 
 		const mid = start + sliceAngle / 2;
-		drawLabel(ctx, cx, cy, radius, mid, segments[i]!.label);
+		drawLabel(ctx, cx, cy, radius, mid, seg.label);
 	}
 
 	drawHub(ctx, cx, cy, radius);
