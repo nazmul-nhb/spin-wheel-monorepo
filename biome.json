@@ -54,6 +54,6 @@
 		}
 	},
 	"files": {
-		"includes": ["packages/**/*.ts", "demo/**/*.ts"]
+		"includes": ["packages/**/*.ts", "demo/**/*.ts", "nhb.scripts.config.mjs", "package.json"]
 	}
 }
