@@ -39,13 +39,13 @@ let injected = false;
 
 /** Inject namespaced CSS into the document head (idempotent). */
 export function injectCss(): void {
-	if (injected || document.getElementById(STYLE_ID)) {
-		injected = true;
-		return;
-	}
-	const style = document.createElement('style');
-	style.id = STYLE_ID;
-	style.textContent = CSS;
-	document.head.appendChild(style);
-	injected = true;
+    if (injected || document.getElementById(STYLE_ID)) {
+        injected = true;
+        return;
+    }
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = CSS;
+    document.head.appendChild(style);
+    injected = true;
 }

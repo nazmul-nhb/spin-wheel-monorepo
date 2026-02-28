@@ -10,13 +10,13 @@ export { autoInit } from './autoInit.js';
 export { injectCss } from './css.js';
 export { load } from './loader.js';
 export type {
-	AutoInitOptions,
-	LoadOptions,
-	SpinResult,
-	SpinWheelCreateConfig,
-	SpinWheelGlobal,
-	WheelSegment,
-	WheelState,
+    AutoInitOptions,
+    LoadOptions,
+    SpinResult,
+    SpinWheelCreateConfig,
+    SpinWheelGlobal,
+    WheelSegment,
+    WheelState,
 } from './types.js';
 
 /** Embed SDK version. */

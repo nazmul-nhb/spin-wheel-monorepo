@@ -6,18 +6,18 @@ import type { SpinWheelWidget } from '@spin-wheel/widget';
 // ---------------------------------------------------------------------------
 
 declare global {
-	interface Window {
-		SpinWheel: SpinWheelGlobal;
-	}
+    interface Window {
+        SpinWheel: SpinWheelGlobal;
+    }
 
-	interface SpinWheelEventMap {
-		'spinwheel:ready': CustomEvent<{ widget: SpinWheelWidget }>;
-		'spinwheel:state': CustomEvent<{ state: WheelState }>;
-		'spinwheel:finish': CustomEvent<SpinResult>;
-	}
+    interface SpinWheelEventMap {
+        'spinwheel:ready': CustomEvent<{ widget: SpinWheelWidget }>;
+        'spinwheel:state': CustomEvent<{ state: WheelState }>;
+        'spinwheel:finish': CustomEvent<SpinResult>;
+    }
 
-	interface HTMLElementEventMap extends SpinWheelEventMap {}
-	interface DocumentEventMap extends SpinWheelEventMap {}
+    interface HTMLElementEventMap extends SpinWheelEventMap {}
+    interface DocumentEventMap extends SpinWheelEventMap {}
 }
 
 // ---------------------------------------------------------------------------
@@ -26,15 +26,15 @@ declare global {
 
 /** Options passed to `SpinWheel.create()`. */
 export interface SpinWheelCreateConfig {
-	readonly segments: readonly WheelSegment[];
-	readonly renderer?: 'canvas' | 'svg';
-	readonly durationMs?: number;
-	readonly minSpins?: number;
-	readonly maxSpins?: number;
-	readonly seed?: string;
-	readonly injectCss?: boolean;
-	readonly onFinish?: (result: SpinResult) => void;
-	readonly onStateChange?: (state: WheelState) => void;
+    readonly segments: readonly WheelSegment[];
+    readonly renderer?: 'canvas' | 'svg';
+    readonly durationMs?: number;
+    readonly minSpins?: number;
+    readonly maxSpins?: number;
+    readonly seed?: string;
+    readonly injectCss?: boolean;
+    readonly onFinish?: (result: SpinResult) => void;
+    readonly onStateChange?: (state: WheelState) => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -43,10 +43,10 @@ export interface SpinWheelCreateConfig {
 
 /** Options for `SpinWheel.autoInit()`. */
 export interface AutoInitOptions {
-	/** Selector for auto-init targets (defaults to `[data-spin-wheel]`). */
-	readonly selector?: string;
-	/** Skip CSS injection (defaults to false). */
-	readonly injectCss?: boolean;
+    /** Selector for auto-init targets (defaults to `[data-spin-wheel]`). */
+    readonly selector?: string;
+    /** Skip CSS injection (defaults to false). */
+    readonly injectCss?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -55,10 +55,10 @@ export interface AutoInitOptions {
 
 /** Options for the async `SpinWheel.load()` helper. */
 export interface LoadOptions {
-	/** URL of the spin-wheel global script. */
-	readonly src: string;
-	/** Call autoInit() after loading (defaults to false). */
-	readonly autoInit?: boolean;
+    /** URL of the spin-wheel global script. */
+    readonly src: string;
+    /** Call autoInit() after loading (defaults to false). */
+    readonly autoInit?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -67,16 +67,16 @@ export interface LoadOptions {
 
 /** The public `window.SpinWheel` global namespace. */
 export interface SpinWheelGlobal {
-	/** Semantic version string. */
-	readonly version: string;
-	/** Create a widget instance manually. */
-	create(elOrSelector: HTMLElement | string, config: SpinWheelCreateConfig): SpinWheelWidget;
-	/** Scan the DOM for `[data-spin-wheel]` elements and mount widgets. */
-	autoInit(options?: AutoInitOptions): SpinWheelWidget[];
-	/** Manually inject the namespaced CSS. */
-	injectCss(): void;
-	/** Async script loader (used from a tiny bootstrap snippet). */
-	load(options: LoadOptions): Promise<SpinWheelGlobal>;
+    /** Semantic version string. */
+    readonly version: string;
+    /** Create a widget instance manually. */
+    create(elOrSelector: HTMLElement | string, config: SpinWheelCreateConfig): SpinWheelWidget;
+    /** Scan the DOM for `[data-spin-wheel]` elements and mount widgets. */
+    autoInit(options?: AutoInitOptions): SpinWheelWidget[];
+    /** Manually inject the namespaced CSS. */
+    injectCss(): void;
+    /** Async script loader (used from a tiny bootstrap snippet). */
+    load(options: LoadOptions): Promise<SpinWheelGlobal>;
 }
 
 // Re-export useful types for consumers

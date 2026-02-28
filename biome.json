@@ -1,59 +1,72 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
-	"vcs": {
-		"enabled": true,
-		"clientKind": "git",
-		"useIgnoreFile": true
-	},
-	"assist": {
-		"actions": {
-			"source": {
-				"organizeImports": "on"
-			}
-		}
-	},
-	"formatter": {
-		"enabled": true,
-		"indentStyle": "tab",
-		"indentWidth": 2,
-		"lineWidth": 100,
-		"lineEnding": "lf"
-	},
-	"linter": {
-		"enabled": true,
-		"rules": {
-			"recommended": true,
-			"correctness": {
-				"noUnusedVariables": "error",
-				"noUnusedImports": "error",
-				"useExhaustiveDependencies": "off"
-			},
-			"suspicious": {
-				"noExplicitAny": "error",
-				"noConfusingVoidType": "off"
-			},
-			"style": {
-				"noNonNullAssertion": "warn",
-				"useConst": "error",
-				"noParameterAssign": "error"
-			},
-			"complexity": {
-				"noForEach": "off"
-			},
-			"performance": {
-				"noDelete": "off"
-			}
-		}
-	},
-	"javascript": {
-		"formatter": {
-			"quoteStyle": "single",
-			"semicolons": "always",
-			"trailingCommas": "all",
-			"arrowParentheses": "always"
-		}
-	},
-	"files": {
-		"includes": ["packages/**/*.ts", "demo/**/*.ts", "nhb.scripts.config.mjs", "package.json"]
-	}
+    "$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+    "vcs": {
+        "enabled": true,
+        "clientKind": "git",
+        "useIgnoreFile": true
+    },
+    "assist": {
+        "actions": {
+            "source": {
+                "organizeImports": "on",
+                "useSortedAttributes": "on"
+            }
+        }
+    },
+    "formatter": {
+        "enabled": true,
+        "indentStyle": "space",
+        "indentWidth": 4,
+        "lineWidth": 96,
+        "lineEnding": "lf"
+    },
+    "linter": {
+        "enabled": true,
+
+        "rules": {
+            "recommended": true,
+            "correctness": {
+                "noUnusedVariables": "error",
+                "noUnusedImports": "error",
+                "useExhaustiveDependencies": "off"
+            },
+            "suspicious": {
+                "noExplicitAny": "error",
+                "noConfusingVoidType": "off",
+                "noUnknownAtRules": "warn",
+                "noArrayIndexKey": "info",
+                "noConsole": {
+                    "fix": "none",
+                    "level": "warn",
+                    "options": {
+                        "allow": ["warn", "table", "error", "info", "dir"]
+                    }
+                }
+            },
+            "style": {
+                "noNonNullAssertion": "warn",
+                "useConst": "warn",
+                "noParameterAssign": "error"
+            },
+            "complexity": {
+                "noForEach": "off"
+            },
+            "performance": {
+                "noDelete": "off"
+            }
+        }
+    },
+    "javascript": {
+        "formatter": {
+            "enabled": true,
+            "arrowParentheses": "always",
+            "quoteStyle": "single",
+            "semicolons": "always",
+            "trailingCommas": "es5",
+            "jsxQuoteStyle": "double"
+        }
+    },
+    "files": {
+        "includes": ["**/*.{js,ts,mjs,html,css,json}", "!**/node_modules", "!**/dist"]
+    }
 }

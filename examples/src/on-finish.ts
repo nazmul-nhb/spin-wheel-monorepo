@@ -16,30 +16,33 @@ const btn = $('#btn') as HTMLButtonElement;
 let spinCount = 0;
 
 const widget = SpinWheelWidget.create('#wheel', {
-	segments,
-	renderer: 'svg',
-	durationMs: 3500,
+    segments,
+    renderer: 'svg',
+    durationMs: 3500,
 
-	// ✅ onFinish — receives the SpinResult after animation completes
-	onFinish(result) {
-		spinCount++;
-		log(logEl, `Spin #${spinCount}: ${result.segment.label} (index=${result.index}, angle=${result.finalAngle.toFixed(1)}°)`);
+    // ✅ onFinish — receives the SpinResult after animation completes
+    onFinish(result) {
+        spinCount++;
+        log(
+            logEl,
+            `Spin #${spinCount}: ${result.segment.label} (index=${result.index}, angle=${result.finalAngle.toFixed(1)}°)`
+        );
 
-		if (result.segment.data) {
-			log(logEl, `  ↳ payload: ${JSON.stringify(result.segment.data)}`);
-		}
-	},
+        if (result.segment.data) {
+            log(logEl, `  ↳ payload: ${JSON.stringify(result.segment.data)}`);
+        }
+    },
 
-	// ✅ onStateChange — tracks the full lifecycle
-	onStateChange(state) {
-		log(stateLogEl, `State → ${state}`);
-	},
+    // ✅ onStateChange — tracks the full lifecycle
+    onStateChange(state) {
+        log(stateLogEl, `State → ${state}`);
+    },
 });
 
 btn.addEventListener('click', () => {
-	btn.disabled = true;
-	// Fire and forget — result is handled by the callback
-	widget.spin().finally(() => {
-		btn.disabled = false;
-	});
+    btn.disabled = true;
+    // Fire and forget — result is handled by the callback
+    widget.spin().finally(() => {
+        btn.disabled = false;
+    });
 });

@@ -17,35 +17,35 @@ let loadPromise: Promise<SpinWheelGlobal> | null = null;
  * Multiple calls are idempotent — the script is loaded only once.
  */
 export function load(options: LoadOptions): Promise<SpinWheelGlobal> {
-	if (loadPromise) return loadPromise;
+    if (loadPromise) return loadPromise;
 
-	loadPromise = new Promise<SpinWheelGlobal>((resolve, reject) => {
-		// If the global already exists (script was loaded manually), resolve immediately
-		const existing = window.SpinWheel;
-		if (existing) {
-			if (options.autoInit) existing.autoInit();
-			resolve(existing);
-			return;
-		}
+    loadPromise = new Promise<SpinWheelGlobal>((resolve, reject) => {
+        // If the global already exists (script was loaded manually), resolve immediately
+        const existing = window.SpinWheel;
+        if (existing) {
+            if (options.autoInit) existing.autoInit();
+            resolve(existing);
+            return;
+        }
 
-		const script = document.createElement('script');
-		script.src = options.src;
-		script.async = true;
-		script.onload = () => {
-			const sw = window.SpinWheel;
-			if (!sw) {
-				reject(new Error('[SpinWheel] Global not found after script loaded.'));
-				return;
-			}
-			if (options.autoInit) sw.autoInit();
-			resolve(sw);
-		};
-		script.onerror = () => {
-			loadPromise = null; // allow retry
-			reject(new Error(`[SpinWheel] Failed to load script: ${options.src}`));
-		};
-		document.head.appendChild(script);
-	});
+        const script = document.createElement('script');
+        script.src = options.src;
+        script.async = true;
+        script.onload = () => {
+            const sw = window.SpinWheel;
+            if (!sw) {
+                reject(new Error('[SpinWheel] Global not found after script loaded.'));
+                return;
+            }
+            if (options.autoInit) sw.autoInit();
+            resolve(sw);
+        };
+        script.onerror = () => {
+            loadPromise = null; // allow retry
+            reject(new Error(`[SpinWheel] Failed to load script: ${options.src}`));
+        };
+        document.head.appendChild(script);
+    });
 
-	return loadPromise;
+    return loadPromise;
 }

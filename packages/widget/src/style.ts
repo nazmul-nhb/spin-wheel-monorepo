@@ -14,9 +14,9 @@ const CSS = `
 
 /** Inject the widget stylesheet into the document head (idempotent). */
 export function injectStyles(): void {
-	if (document.getElementById(STYLE_ID)) return;
-	const style = document.createElement('style');
-	style.id = STYLE_ID;
-	style.textContent = CSS;
-	document.head.appendChild(style);
+    if (document.getElementById(STYLE_ID)) return;
+    const style = document.createElement('style');
+    style.id = STYLE_ID;
+    style.textContent = CSS;
+    document.head.appendChild(style);
 }

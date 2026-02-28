@@ -16,18 +16,18 @@ import { load } from './loader.js';
 import type { SpinWheelCreateConfig, SpinWheelGlobal } from './types.js';
 
 const SpinWheel: SpinWheelGlobal = {
-	version: '1.0.0',
+    version: '1.0.0',
 
-	create(elOrSelector: HTMLElement | string, config: SpinWheelCreateConfig) {
-		if (config.injectCss !== false) {
-			injectCss();
-		}
-		return SpinWheelWidget.create(elOrSelector, config);
-	},
+    create(elOrSelector: HTMLElement | string, config: SpinWheelCreateConfig) {
+        if (config.injectCss !== false) {
+            injectCss();
+        }
+        return SpinWheelWidget.create(elOrSelector, config);
+    },
 
-	autoInit,
-	injectCss,
-	load,
+    autoInit,
+    injectCss,
+    load,
 };
 
 // Attach to global

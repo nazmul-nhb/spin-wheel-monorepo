@@ -27,36 +27,42 @@ const finishLog = $('#finish-log');
 
 // ✅ Fully typed: e.detail is { widget: SpinWheelWidget }
 document.addEventListener('spinwheel:ready', (e) => {
-	const { widget } = e.detail;
-	log(readyLog, `Widget ready! isSpinning=${widget.isSpinning}, isDestroyed=${widget.isDestroyed}`);
+    const { widget } = e.detail;
+    log(
+        readyLog,
+        `Widget ready! isSpinning=${widget.isSpinning}, isDestroyed=${widget.isDestroyed}`
+    );
 
-	// Add a spin button programmatically via the widget reference
-	const btn = document.createElement('button');
-	btn.className = 'btn';
-	btn.textContent = 'Spin (from ready event)';
-	btn.addEventListener('click', () => {
-		if (widget.isSpinning) return;
-		btn.disabled = true;
-		widget.spin().finally(() => {
-			btn.disabled = false;
-		});
-	});
-	$('#wheel').after(btn);
+    // Add a spin button programmatically via the widget reference
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = 'Spin (from ready event)';
+    btn.addEventListener('click', () => {
+        if (widget.isSpinning) return;
+        btn.disabled = true;
+        widget.spin().finally(() => {
+            btn.disabled = false;
+        });
+    });
+    $('#wheel').after(btn);
 });
 
 // ✅ Fully typed: e.detail.state is WheelState ('idle' | 'spinning' | 'finished')
 document.addEventListener('spinwheel:state', (e) => {
-	const { state } = e.detail;
-	log(stateLog, `State → ${state}`);
+    const { state } = e.detail;
+    log(stateLog, `State → ${state}`);
 });
 
 // ✅ Fully typed: e.detail is SpinResult { index, segment, finalAngle }
 document.addEventListener('spinwheel:finish', (e) => {
-	log(finishLog, `Winner: ${e.detail.segment.label} (index=${e.detail.index}, angle=${e.detail.finalAngle.toFixed(1)}°)`);
+    log(
+        finishLog,
+        `Winner: ${e.detail.segment.label} (index=${e.detail.index}, angle=${e.detail.finalAngle.toFixed(1)}°)`
+    );
 
-	if (e.detail.segment.data) {
-		log(finishLog, `  ↳ payload: ${JSON.stringify(e.detail.segment.data)}`);
-	}
+    if (e.detail.segment.data) {
+        log(finishLog, `  ↳ payload: ${JSON.stringify(e.detail.segment.data)}`);
+    }
 });
 
 // ---------------------------------------------------------------------------
@@ -66,8 +72,8 @@ document.addEventListener('spinwheel:finish', (e) => {
 const wheelEl = $('#wheel');
 
 wheelEl.addEventListener('spinwheel:finish', (e) => {
-	// Same type safety on the element directly
-	log(finishLog, `(element listener) segment.id = "${e.detail.segment.id}"`);
+    // Same type safety on the element directly
+    log(finishLog, `(element listener) segment.id = "${e.detail.segment.id}"`);
 });
 
 // ---------------------------------------------------------------------------

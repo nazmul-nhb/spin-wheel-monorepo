@@ -9,22 +9,22 @@
  * @returns Final rotation in degrees (always positive, ≥ 360 * extraSpins).
  */
 export function calculateFinalAngle(
-	index: number,
-	count: number,
-	extraSpins: number,
-	rng: () => number,
+    index: number,
+    count: number,
+    extraSpins: number,
+    rng: () => number
 ): number {
-	const segmentAngle = 360 / count;
+    const segmentAngle = 360 / count;
 
-	// 10 % padding from edges
-	const padding = segmentAngle * 0.1;
-	const innerRange = segmentAngle - 2 * padding;
-	const randomOffset = padding + rng() * innerRange;
+    // 10 % padding from edges
+    const padding = segmentAngle * 0.1;
+    const innerRange = segmentAngle - 2 * padding;
+    const randomOffset = padding + rng() * innerRange;
 
-	// The segment center sits at  index * segmentAngle.
-	// To place that segment at the top (0°) after clockwise rotation the
-	// wheel must rotate by:  360 - (index * segmentAngle + randomOffset)
-	const targetAngle = 360 - (index * segmentAngle + randomOffset);
+    // The segment center sits at  index * segmentAngle.
+    // To place that segment at the top (0°) after clockwise rotation the
+    // wheel must rotate by:  360 - (index * segmentAngle + randomOffset)
+    const targetAngle = 360 - (index * segmentAngle + randomOffset);
 
-	return extraSpins * 360 + (((targetAngle % 360) + 360) % 360);
+    return extraSpins * 360 + (((targetAngle % 360) + 360) % 360);
 }
