@@ -23,6 +23,7 @@
     ],
     "scripts": {
         "build": "tsdown",
+        "watch": "tsdown --watch",
         "test": "vitest run"
     },
     "devDependencies": {

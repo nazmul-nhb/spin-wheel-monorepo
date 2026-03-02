@@ -25,6 +25,7 @@
     "scripts": {
         "build": "tsdown && node build-global.mjs",
         "build:global": "node build-global.mjs",
+        "watch": "tsdown --watch",
         "dev": "vite"
     },
     "dependencies": {

@@ -6,6 +6,7 @@
         "build": "pnpm -r build",
         "build:embed": "pnpm --filter @spin-wheel/embed build",
         "dev": "pnpm --filter demo dev",
+        "watch": "pnpm -r --parallel watch",
         "dev:embed": "pnpm --filter @spin-wheel/embed dev",
         "dev:examples": "pnpm --filter examples dev",
         "clean": "pnpm -r exec rm -rf dist",

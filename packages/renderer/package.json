@@ -22,7 +22,8 @@
         "dist"
     ],
     "scripts": {
-        "build": "tsdown"
+        "build": "tsdown",
+        "watch": "tsdown --watch"
     },
     "peerDependencies": {
         "@spin-wheel/core": "workspace:*"
